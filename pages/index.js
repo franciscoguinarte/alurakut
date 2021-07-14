@@ -17,7 +17,7 @@ function ProfileSidebar(propriedades) {
   );
 }
 export default function Home() {
-  const githubUser = "bardourbano";
+  const githubUser = "franciscoguinarte";
   const pessoasFavoritas = [
     "juunegreiros",
     "omariosouto",

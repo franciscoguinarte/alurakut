@@ -10,24 +10,35 @@ const Box = styled.div`
   border-radius: 8px;
 `
 
+const MainGrid = styled.main`
+  display : grid;
+  grid-gap : 10px;
+  padding: 16px;
 
+  @media(min-width : 860px){
+    grid-template-areas: "profileArea welcomeArea profileRealtionsArea";
+    grid-template-columns : 160px 618px 312px;
+
+  }
+
+`
 
 export default function Home() {
   return (
   
-  <main>
-    <Box>
+  <MainGrid> 
+    <Box style={{ 'grid-area ': 'profileArea'}}>
       Imagem
     </Box>
-    <Box>
+    <Box style={{ 'grid-area ': 'welcomeArea'}}>
       Bem vindos
     </Box>
-    <Box>
+    <Box style={{ 'grid-area ': 'profileRelationsArea'}}>
       Comunidades
     </Box>
     
           
-  </main>
+  </MainGrid>
   
   )
 }

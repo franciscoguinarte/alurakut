@@ -2,6 +2,7 @@ import MainGrid from "../src/components/MainGrid";
 import Box from "../src/components/Box";
 import { AlurakutMenu, OrkutNostalgicIconSet, AlurakutProfileSidebarMenuDefault } from "../src/lib/AlurakutCommons";
 import { ProfileRelationsBoxWrapper } from "../src/components/ProfileRelations";
+import React from "react";
 
 function ProfileSidebar(propriedades) {
   return (
@@ -22,7 +23,13 @@ function ProfileSidebar(propriedades) {
 }
 
 export default function Home() {
+   
   const githubUser = "franciscoguinarte";
+  const [comunidades,setComunidades] = React.useState([{
+    id : "123123",
+    title: 'eu odeio acordar cedo',
+    image: 'http://alurakut.vercel.app/capa-comunidade-01.jpg'
+  }])
   const pessoasFavoritas = [
     "juunegreiros",
     "omariosouto",
@@ -31,16 +38,16 @@ export default function Home() {
     "marcobrunodev",
     "felipefialho",
   ];
+
   return (
     <>
       <AlurakutMenu />
       <MainGrid>
-        <div className="profileArea" style={{ "grid-area ": "profileArea" }}>
+        <div className="profileArea" style={{ "grid-area": "profileArea" }}>
           <ProfileSidebar githubUser={githubUser} />
         </div>
 
-
-        <div className="welcomeArea" style={{ "grid-area ": "welcomeArea" }}>
+        <div className="welcomeArea" style={{ "grid-area": "welcomeArea" }}>
           <Box >
             <h1 className="title">
               Bem vindo(a)
@@ -51,8 +58,16 @@ export default function Home() {
           <Box className="formArea">
             <h2 className="subTitle">O que você deseja fazer ?</h2>
 
-            <form onSubmit= { function handleCriaComunidade() {
-              alert('Teste')
+            <form onSubmit={function handleCriaComunidade(e) {
+              e.preventDefault();
+              const dadosDoForm = new FormData(e.target);
+              const comunidade = {
+                id: new Date().toISOString(),
+                title : dadosDoForm.get('title'),
+                image : dadosDoForm.get('image')
+              }
+              const comunidadesAtualizadas = [...comunidades,comunidade]
+              setComunidades(comunidadesAtualizadas) 
             }}>
               <div>
                 <input placeholder="Qual vai ser o nome da sua comunidade ?"
@@ -61,7 +76,7 @@ export default function Home() {
 
               <div>
                 <input placeholder="Coloque uma url para usar de capa"
-                  name="title" aria-label="Coloque uma url para usar de capa" type="text" />
+                  name="image" aria-label="Coloque uma url para usar de capa" type="text" />
               </div>
 
               <button>
@@ -74,10 +89,7 @@ export default function Home() {
 
         </div>
 
-        <div
-          className="profileRelationsArea"
-          style={{ "grid-area ": "profileRelationsArea" }}
-        >
+        <div className="profileRelationsArea" style={{ "grid-area ": "profileRelationsArea" }}>
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
               Pessoas da comunidade ({pessoasFavoritas.length})
@@ -85,13 +97,31 @@ export default function Home() {
             <ul>
               {pessoasFavoritas.map((itemAtual) => {
                 return (
-                  <li key={itemAtual}>
-                    <a href={`/users/${itemAtual}`}>
+                  <li  key={itemAtual}>
+                    <a href={`/users/${itemAtual}`} key={itemAtual}>
                       <img src={`https://github.com/${itemAtual}.png`} />
                       <span>{itemAtual}</span>
                     </a>
                   </li>
                 );
+              })}
+            </ul>
+          </ProfileRelationsBoxWrapper>
+          <ProfileRelationsBoxWrapper>
+            <h2 className="smallTitle">
+              Comunidades ({comunidades.length})
+            </h2>
+            <ul>
+              {comunidades.map((itemAtual) => {
+                console.log(itemAtual.title);
+                return (
+                  <li key={itemAtual.id}>
+                    <a href={`/users/${itemAtual.title}`}  key={itemAtual.title}>
+                      <img src={itemAtual.image} />
+                      <span>{itemAtual.title}</span>
+                    </a>
+                  </li>
+                )
               })}
             </ul>
           </ProfileRelationsBoxWrapper>

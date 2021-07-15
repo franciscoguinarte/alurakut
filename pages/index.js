@@ -39,19 +39,31 @@ export default function Home() {
           <ProfileSidebar githubUser={githubUser} />
         </div>
 
+
         <div className="welcomeArea" style={{ "grid-area ": "welcomeArea" }}>
-          <Box className="title">
+          <Box>
             Bem vindo(a)
             <OrkutNostalgicIconSet />
           </Box>
 
           <Box className="formArea">
-            <h2>O que você deseja fazer ?</h2>
+            <h2 className = "subTitle">O que você deseja fazer ?</h2>
 
             <form>
-              <input placeholder="Qual vai ser o nome da sua comunidade ?"
-                name="title" aria-label="Qual vai ser o nome da sua comunidade ?" />
-              <input placeholder="Qual vai ser o nome da sua comunidade ?" />
+              <div>
+                <input placeholder="Qual vai ser o nome da sua comunidade ?"
+                  name="title" aria-label="Qual vai ser o nome da sua comunidade ?" type="text" />
+              </div>
+
+              <div>
+                <input placeholder="Coloque uma url para usar de capa"
+                  name="title" aria-label="Coloque uma url para usar de capa" type="text" />
+              </div>
+            
+            <button> 
+              Criar comunidade
+            </button>
+
             </form>
 
           </Box>

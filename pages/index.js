@@ -41,15 +41,19 @@ export default function Home() {
 
 
         <div className="welcomeArea" style={{ "grid-area ": "welcomeArea" }}>
-          <Box>
-            Bem vindo(a)
+          <Box >
+            <h1 className="title">
+              Bem vindo(a)
+            </h1>
             <OrkutNostalgicIconSet />
           </Box>
 
           <Box className="formArea">
-            <h2 className = "subTitle">O que você deseja fazer ?</h2>
+            <h2 className="subTitle">O que você deseja fazer ?</h2>
 
-            <form>
+            <form onSubmit= { function handleCriaComunidade() {
+              alert('Teste')
+            }}>
               <div>
                 <input placeholder="Qual vai ser o nome da sua comunidade ?"
                   name="title" aria-label="Qual vai ser o nome da sua comunidade ?" type="text" />
@@ -59,10 +63,10 @@ export default function Home() {
                 <input placeholder="Coloque uma url para usar de capa"
                   name="title" aria-label="Coloque uma url para usar de capa" type="text" />
               </div>
-            
-            <button> 
-              Criar comunidade
-            </button>
+
+              <button>
+                Criar comunidade
+              </button>
 
             </form>
 

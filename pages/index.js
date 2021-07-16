@@ -22,14 +22,34 @@ function ProfileSidebar(propriedades) {
   );
 }
 
+function ProfileRelationsBox(propriedades) {
+  return (
+    <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">
+        {propriedades.title} ({propriedades.items.length})
+      </h2>
+      <ul>
+        {/* {seguidores.map((itemAtual) => {
+        return (
+          <li  key={itemAtual}>
+            <a href={`https://github.com/${itemAtual}`} key={itemAtual}>
+              <img src={`https://github.com/${itemAtual}.png`} />
+              <span>{itemAtual}</span>
+            </a>
+          </li>
+        );
+      })} */}
+      </ul>
+    </ProfileRelationsBoxWrapper>
+  )
+}
+
 export default function Home() {
-   
+
+
+
   const githubUser = "franciscoguinarte";
-  const [comunidades,setComunidades] = React.useState([{
-    id : "123123",
-    title: 'eu odeio acordar cedo',
-    image: 'http://alurakut.vercel.app/capa-comunidade-01.jpg'
-  }])
+  const [comunidades, setComunidades] = React.useState([ ])
   const pessoasFavoritas = [
     "juunegreiros",
     "omariosouto",
@@ -38,6 +58,46 @@ export default function Home() {
     "marcobrunodev",
     "felipefialho",
   ];
+
+  const [seguidores, setSeguidores] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch(`http://api.github.com/users/${githubUser}/followers`)
+      .then((respostaServidor) => {
+        return respostaServidor.json();
+      })
+      .then((respostaCompleta) => {
+        setSeguidores(respostaCompleta)
+      })
+      fetch('https://graphql.datocms.com/', {
+        method: 'POST',
+        headers: {
+          'Authorization': '43dff9b12ac27b831b3f955c16b5a9',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({ "query": `query {
+          allCommunities {
+            id 
+            title
+            imageUrl
+            creatorSlug
+          }
+        }` })
+      })
+      .then((response) => response.json()) // Pega o retorno do response.json() e já retorna
+      .then((respostaCompleta) => {
+        const comunidadesVindasDoDato = respostaCompleta.data.allCommunities;
+        console.log(comunidadesVindasDoDato)
+        setComunidades(comunidadesVindasDoDato)
+      })
+      // .then(function (response) {
+      //   return response.json()
+      // })
+  
+    }, [])
+
+
 
   return (
     <>
@@ -63,11 +123,11 @@ export default function Home() {
               const dadosDoForm = new FormData(e.target);
               const comunidade = {
                 id: new Date().toISOString(),
-                title : dadosDoForm.get('title'),
-                image : dadosDoForm.get('image')
+                title: dadosDoForm.get('title'),
+                image: dadosDoForm.get('image')
               }
-              const comunidadesAtualizadas = [...comunidades,comunidade]
-              setComunidades(comunidadesAtualizadas) 
+              const comunidadesAtualizadas = [...comunidades, comunidade]
+              setComunidades(comunidadesAtualizadas)
             }}>
               <div>
                 <input placeholder="Qual vai ser o nome da sua comunidade ?"
@@ -90,6 +150,8 @@ export default function Home() {
         </div>
 
         <div className="profileRelationsArea" style={{ "grid-area ": "profileRelationsArea" }}>
+
+          <ProfileRelationsBox title="Seguidores" items={seguidores} />
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
               Pessoas da comunidade ({pessoasFavoritas.length})
@@ -97,8 +159,8 @@ export default function Home() {
             <ul>
               {pessoasFavoritas.map((itemAtual) => {
                 return (
-                  <li  key={itemAtual}>
-                    <a href={`/users/${itemAtual}`} key={itemAtual}>
+                  <li key={itemAtual}>
+                    <a href={`https://github.com/${itemAtual}`} key={itemAtual}>
                       <img src={`https://github.com/${itemAtual}.png`} />
                       <span>{itemAtual}</span>
                     </a>
@@ -116,8 +178,8 @@ export default function Home() {
                 console.log(itemAtual.title);
                 return (
                   <li key={itemAtual.id}>
-                    <a href={`/users/${itemAtual.title}`}  key={itemAtual.title}>
-                      <img src={itemAtual.image} />
+                    <a href={`/users/${itemAtual.title}`} key={itemAtual.title}>
+                      <img src={itemAtual.imageUrl} />
                       <span>{itemAtual.title}</span>
                     </a>
                   </li>
